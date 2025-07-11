@@ -14,12 +14,15 @@ class TimeSheetEntry(models.Model):
     date_of_services = models.DateField()
     duration = models.TimeField()
     work_description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)  # Optional tracking
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.resource.username} - {self.project_name} - {self.date_of_services}"
 
+    class Meta:
+        verbose_name = "Time Sheet Entry"
+        verbose_name_plural = "Time Sheet Entries"
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [

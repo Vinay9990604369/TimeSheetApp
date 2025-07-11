@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to TimeSheetApp</title>
+</head>
+<body>
+    <h1>Welcome to TimeSheetApp!</h1>
+    <p>You are logged in as <strong>{{ user.username }}</strong></p>
+
+    <p>Your role: <strong>{{ user.userprofile.role|title }}</strong></p>
+
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+
+    <!-- Optional: Show a link to submit timesheet only for consultants -->
+    {% if user.userprofile.role == 'consultant' %}
+        <p><a href="{% url 'submit_timesheet' %}">Submit Timesheet</a></p>
+    {% endif %}
+</body>
+</html>

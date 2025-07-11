@@ -5,14 +5,17 @@ from .models import UserProfile, TimeSheetEntry
 
 @login_required
 def home(request):
+    # Home page, shows basic info and links
     return render(request, 'core/home.html', {'user': request.user})
 
 @login_required
 def submit_timesheet(request):
     profile = request.user.userprofile
+    
+    # Only consultants can submit timesheets
     if profile.role != 'consultant':
-        # Optionally, add a message here explaining why
-        return redirect('home')  # Only consultants allowed to submit timesheets
+        # Optionally, add a message explaining access restriction here
+        return redirect('home')
 
     if request.method == 'POST':
         form = TimeSheetEntryForm(request.POST)
@@ -29,10 +32,12 @@ def submit_timesheet(request):
 @login_required
 def timesheet_list(request):
     profile = request.user.userprofile
+    
     if profile.role == 'admin':
+        # Admin sees all timesheets
         timesheets = TimeSheetEntry.objects.all().order_by('-date_of_services')
     else:
-        # For consultants and others, show only their timesheets
+        # Consultants and others see only their own timesheets
         timesheets = TimeSheetEntry.objects.filter(resource=request.user).order_by('-date_of_services')
     
     return render(request, 'core/timesheet_list.html', {'timesheets': timesheets})
@@ -40,8 +45,10 @@ def timesheet_list(request):
 @login_required
 def timesheet_detail(request, pk):
     timesheet = get_object_or_404(TimeSheetEntry, pk=pk)
-    # Check if user has access:
-    if request.user.userprofile.role != 'admin' and timesheet.resource != request.user:
-        return redirect('timesheet_list')  # No access if not admin or owner
+    profile = request.user.userprofile
+
+    # Admins can see all, others only their own timesheets
+    if profile.role != 'admin' and timesheet.resource != request.user:
+        return redirect('timesheet_list')  # No access if unauthorized
     
     return render(request, 'core/timesheet_detail.html', {'timesheet': timesheet})

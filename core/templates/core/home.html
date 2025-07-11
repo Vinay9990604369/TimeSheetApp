@@ -7,7 +7,15 @@
     <h1>Welcome to TimeSheetApp!</h1>
     <p>You are logged in as <strong>{{ user.username }}</strong></p>
 
-    <p>Your role: <strong>{{ user.userprofile.role|title }}</strong></p>
+    <p>Your role:
+        <strong>
+            {% if user.userprofile %}
+                {{ user.userprofile.role|title }}
+            {% else %}
+                Unknown
+            {% endif %}
+        </strong>
+    </p>
 
     <p><a href="{% url 'logout' %}">Logout</a></p>
 
@@ -17,7 +25,7 @@
     {% endif %}
 
     <!-- Show timesheet list link for admins and consultants -->
-    {% if user.userprofile.role in 'admin consultant' %}
+    {% if user.userprofile.role in ['admin', 'consultant'] %}
         <p><a href="{% url 'timesheet_list' %}">View Timesheets</a></p>
     {% endif %}
 </body>

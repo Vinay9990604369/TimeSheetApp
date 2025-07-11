@@ -1,11 +1,16 @@
+# timesheet/urls.py
+
 from django.contrib import admin
-from django.urls import path
-from django.contrib.auth import views as auth_views
-from core.views import home  # Import the home view
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', home, name='home'),  # Root path now handled
     path('admin/', admin.site.urls),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
+    # Auth views
+    path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='core/logged_out.html'), name='logout'),
+
+    # Core app routes
+    path('', include('core.urls')),  # ✅ All app views are routed via core.urls
 ]

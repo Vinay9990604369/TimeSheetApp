@@ -11,9 +11,14 @@
 
     <p><a href="{% url 'logout' %}">Logout</a></p>
 
-    <!-- Optional: Show a link to submit timesheet only for consultants -->
+    <!-- Show a link to submit timesheet only for consultants -->
     {% if user.userprofile.role == 'consultant' %}
         <p><a href="{% url 'submit_timesheet' %}">Submit Timesheet</a></p>
+    {% endif %}
+
+    <!-- Show timesheet list link for admins and consultants -->
+    {% if user.userprofile.role in 'admin consultant' %}
+        <p><a href="{% url 'timesheet_list' %}">View Timesheets</a></p>
     {% endif %}
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import TimeSheetEntryForm
 from .models import UserProfile, TimeSheetEntry
+from django.contrib import messages  # <-- Keep this import
 
 @login_required
 def home(request):
@@ -14,7 +15,7 @@ def submit_timesheet(request):
     
     # Only consultants can submit timesheets
     if profile.role != 'consultant':
-        # Optionally, add a message explaining access restriction here
+        messages.error(request, "❌ You are not authorized to submit timesheets.")
         return redirect('home')
 
     if request.method == 'POST':
@@ -23,7 +24,10 @@ def submit_timesheet(request):
             timesheet = form.save(commit=False)
             timesheet.resource = request.user  # Assign current user as resource
             timesheet.save()
+            messages.success(request, "✅ Timesheet submitted successfully!")
             return redirect('home')  # Redirect after successful save
+        else:
+            messages.error(request, "⚠️ There was an error with your submission. Please check the form.")
     else:
         form = TimeSheetEntryForm()
 
@@ -49,6 +53,7 @@ def timesheet_detail(request, pk):
 
     # Admins can see all, others only their own timesheets
     if profile.role != 'admin' and timesheet.resource != request.user:
+        messages.error(request, "❌ You are not authorized to view this timesheet.")
         return redirect('timesheet_list')  # No access if unauthorized
     
     return render(request, 'core/timesheet_detail.html', {'timesheet': timesheet})

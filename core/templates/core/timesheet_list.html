@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Timesheets</title>
-</head>
-<body>
-    <h1>Timesheet Entries</h1>
-    <p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'submit_timesheet' %}">Submit New Timesheet</a> | <a href="{% url 'logout' %}">Logout</a></p>
-    {% if timesheets %}
-        <ul>
-            {% for ts in timesheets %}
-                <li>
-                    <a href="{% url 'timesheet_detail' ts.pk %}">
-                        {{ ts.project_name }} - {{ ts.date_of_services }} - {{ ts.resource.username }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No timesheet entries found.</p>
-    {% endif %}
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Timesheet Entries</h1>
+<nav>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'submit_timesheet' %}">Submit New Timesheet</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</nav>
+
+{% if timesheets %}
+    <ul class="timesheet-list">
+        {% for ts in timesheets %}
+            <li>
+                <a href="{% url 'timesheet_detail' ts.pk %}">
+                    {{ ts.project_name }} — {{ ts.date_of_services|date:"M d, Y" }} — {{ ts.resource.username }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="no-entries">No timesheet entries found.</p>
+{% endif %}
+{% endblock %}

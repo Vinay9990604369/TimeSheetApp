@@ -1,6 +1,26 @@
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="login-box" style="max-width: 320px; margin: 2em auto; background: white; padding: 2em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center;">
+    <h2>Login to TimeSheetApp</h2>
+
+    {% if form.errors %}
+        <p style="color: red; margin-bottom: 1em;">Invalid username or password. Please try again.</p>
+    {% endif %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+
+        <button type="submit" style="background-color: #007bff; border: none; padding: 0.75em; color: white; font-size: 1em; border-radius: 4px; cursor: pointer;">Login</button>
+    </form>
+
+    <p style="margin-top: 1em; font-size: 0.9em;">
+        <a href="{% url 'password_reset' %}" style="color: #007bff; text-decoration: none;">Forgot Password?</a>
+    </p>
+</div>
+{% endblock %}

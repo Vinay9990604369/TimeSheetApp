@@ -1,26 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Timesheet Details</title>
-</head>
-<body>
-    <h1>Timesheet Details</h1>
-    <p><a href="{% url 'timesheet_list' %}">Back to Timesheets</a> | <a href="{% url 'home' %}">Home</a> | <a href="{% url 'logout' %}">Logout</a></p>
+{% extends "base.html" %}
 
-    <ul>
-        <li><strong>Project:</strong> {{ timesheet.project_name }}</li>
-        <li><strong>Supplier:</strong> {{ timesheet.supplier_name }}</li>
-        <li><strong>Customer:</strong> {{ timesheet.customer }}</li>
-        <li><strong>Project ID:</strong> {{ timesheet.project_id }}</li>
-        <li><strong>Service Type ID:</strong> {{ timesheet.service_type_id }}</li>
-        <li><strong>Phase:</strong> {{ timesheet.phase }}</li>
-        <li><strong>Task ID:</strong> {{ timesheet.task_id }}</li>
-        <li><strong>Date of Service:</strong> {{ timesheet.date_of_services }}</li>
-        <li><strong>Duration:</strong> {{ timesheet.duration }}</li>
-        <li><strong>Description:</strong> {{ timesheet.work_description }}</li>
-        <li><strong>Resource (User):</strong> {{ timesheet.resource.username }}</li>
-        <li><strong>Created At:</strong> {{ timesheet.created_at }}</li>
-        <li><strong>Updated At:</strong> {{ timesheet.updated_at }}</li>
-    </ul>
-</body>
-</html>
+{% block content %}
+<h1>Timesheet Details</h1>
+
+<nav>
+    <a href="{% url 'timesheet_list' %}">Back to Timesheets</a>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</nav>
+
+<ul style="background: white; padding: 1.5em; border-radius: 8px; max-width: 600px; box-shadow: 0 0 10px rgba(0,0,0,0.1); list-style-type: none;">
+    <li><strong>Project:</strong> {{ timesheet.project_name }}</li>
+    <li><strong>Supplier:</strong> {{ timesheet.supplier_name }}</li>
+    <li><strong>Customer:</strong> {{ timesheet.customer }}</li>
+    <li><strong>Project ID:</strong> {{ timesheet.project_id }}</li>
+    <li><strong>Service Type ID:</strong> {{ timesheet.service_type_id }}</li>
+    <li><strong>Phase:</strong> {{ timesheet.phase }}</li>
+    <li><strong>Task ID:</strong> {{ timesheet.task_id }}</li>
+    <li><strong>Date of Service:</strong> {{ timesheet.date_of_services }}</li>
+    <li><strong>Duration:</strong> {{ timesheet.duration }}</li>
+    <li><strong>Description:</strong> {{ timesheet.work_description }}</li>
+    <li><strong>Resource (User):</strong> {{ timesheet.resource.username }}</li>
+    <li><strong>Created At:</strong> {{ timesheet.created_at|date:"F j, Y, g:i a" }}</li>
+    <li><strong>Updated At:</strong> {{ timesheet.updated_at|date:"F j, Y, g:i a" }}</li>
+</ul>
+{% endblock %}

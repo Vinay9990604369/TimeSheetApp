@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # User Defined Apps
-    'core',  # <-- Add this line
+    # Your app
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,7 @@ ROOT_URLCONF = "timesheet.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [],  # You can add global template dirs here if needed
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -120,8 +120,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# Authentication URLs and redirects
 LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/login/"

@@ -1,11 +1,22 @@
-# core/urls.py
+# timesheet/urls.py
 
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('submit-timesheet/', views.submit_timesheet, name='submit_timesheet'),
-    path('timesheets/', views.timesheet_list, name='timesheet_list'),
-    path('timesheets/<int:pk>/', views.timesheet_detail, name='timesheet_detail'),
+    path('admin/', admin.site.urls),
+
+    # Auth views
+    path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='core/logged_out.html'), name='logout'),
+
+    # 🔽 Add built-in password reset views
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    # Core app routes
+    path('', include('core.urls')),
 ]

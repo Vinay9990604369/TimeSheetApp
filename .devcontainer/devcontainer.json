@@ -23,6 +23,11 @@
 
   "postStartCommand": ". .venv/bin/activate && python manage.py runserver 0.0.0.0:8000",
 
+  "containerEnv": {
+    "DEBUG": "True",
+    "ALLOWED_HOSTS": "*"
+  },
+
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
   }
